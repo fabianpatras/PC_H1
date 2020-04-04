@@ -1,0 +1,28 @@
+// PATRAȘ ANTON-FABIAN
+// MARTIE 2020
+
+Salutari,
+
+	Am inceput aceasta tema implementand ARP. A iesit destul de rapid. Am facut
+doua functii generate_reply respectiv generate_request pe care le-am apelat
+in bulca din main dupa verificarile necesare. Tot aici am implementat o
+retinere a tabelei cu intrari de tip ARP prin init_arp_table, search_arp_entry
+si add_arp_entry.
+
+	Am continuat cu procesul de routare. Am implementat stocarea informatiilor 
+din fisierului rtable.txt folosind un/o trie cu alfabetul {0, 1} unde in 
+nodurile terminale am pus informatiile necesare rutarii. Lungimea unui cuvant 
+(prefix) stocat este dat de lungimea mastii aferente. Cautarea se realizeaza 
+in O(m), unde m este lungimea unei adrese IP (v4 in cazul nostru) care e, 
+de fapt, O(1).
+
+	In caz ca se detecteaza header de IP, atunci pacchetul este trimis functiei
+forward_packet care care se ocupa de tot procesul. Verifica checksum, verifica
+daca pachetul ne este destinat noua, verifica daca are tll < 1, verifica
+daca exista cale in tabela de rutare cate destinatie, verifica apoi, in caz ca
+ruta exista, daca exista arp entry. In caz ca nu exista pune pachetul intr-o 
+coada si trimite arp request, daca exista atunci formeaza pachetul si il
+returneaza. Functia forward_packet returneaza pachetul care trebuie in cazurile
+de mai sus. Modificarea checksumului este realizat conform RFC1624: 
+"Computation of the Internet Checksum via Incremental Update". In caz ca am pus
+pachet in coada, la primirea arp reply-ului scoatem pachetul si il trimitem.
